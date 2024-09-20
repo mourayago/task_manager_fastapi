@@ -1,11 +1,10 @@
-from fastapi import FastAPI 
+from fastapi import FastAPI
 
-app = FastAPI()  
+app = FastAPI()
 
-@app.get('/')  
-def read_root():  
+
+@app.get('/')
+def read_root():
+    """hello world usando fast_api
+    que irá retorna um json com o conteúdo 'Olá Mundo'"""
     return {'message': 'Olá Mundo!'}
-
-
-if __name__ == '__main__':
-    print(read_root())
