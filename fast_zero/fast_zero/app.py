@@ -3,6 +3,7 @@ from http import HTTPStatus
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy import select
 from sqlalchemy.orm import Session
+from fast_zero.security import get_password_hash
 
 from fast_zero.database import get_session
 from fast_zero.models import User
@@ -37,7 +38,9 @@ def create_user(user: UserSchema, session: Session = Depends(get_session)):
             )
 
     db_user = User(
-        username=user.username, password=user.password, email=user.email
+        username=user.username, 
+        password=get_password_hash(user.password), 
+        email=user.email
     )
 
     session.add(db_user)
@@ -66,7 +69,7 @@ def update_user(
         )
 
     db_user.username = user.username
-    db_user.password = user.password
+    db_user.password = get_password_hash(user.password)
     db_user.email = user.email
     session.commit()
     session.refresh(db_user)
