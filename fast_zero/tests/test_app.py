@@ -27,9 +27,7 @@ def test_create_user(client):
     }
 
 
-def test_create_user_should_return_400_username_exists__exercicio(
-    client, user
-):
+def test_create_user_should_return_400_username_exists__exercicio(client, user):
     response = client.post(
         '/users/',
         json={
@@ -127,3 +125,15 @@ def test_delete_user(client, user):
 
     assert response.status_code == HTTPStatus.OK
     assert response.json() == {'message': 'User deleted'}
+
+
+def test_get_token(client, user):
+    response = client.post(
+        '/token',
+        data={'username': user.email, 'password': user.password},
+    )
+    token = response.json()
+
+    assert response.status_code == HTTPStatus.OK
+    assert 'access_token' in token
+    assert 'token_type' in token
